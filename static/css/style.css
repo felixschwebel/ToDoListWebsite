@@ -1,3 +1,27 @@
-.nav-bar {
-  background-color: red;
+body {
+    font-family: 'Syne Mono', monospace;
+    background: #F0F0F0;
+}
+
+nav {
+    background-color: #9CE49F;
+}
+
+.google-icon {
+  font-size: 35px;
+}
+
+.logo {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 150px;
+    padding-top: 0.6em;
+}
+
+.normal-text {
+    font-size: 32px;
+}
+
+
+.nav-text {
+    font-size: 24px;
 }
