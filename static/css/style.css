@@ -7,14 +7,22 @@ nav {
     background-color: #9CE49F;
 }
 
+button {
+  background-color: #9CE49F !important;
+  border-color: black !important;
+  border-radius: 2em !important;
+  color: black !important;
+}
+
 .google-icon {
   font-size: 35px;
+  vertical-align: baseline;
 }
 
 .logo {
     font-family: 'Reenie Beanie', cursive;
-    font-size: 150px;
-    padding-top: 0.6em;
+    font-size: 9em;
+    padding-top: 10%;
 }
 
 .normal-text {
@@ -24,4 +32,22 @@ nav {
 
 .nav-text {
     font-size: 24px;
+}
+
+.content {
+  padding-left: 10%;
+}
+
+.start-button {
+  padding: 0.1em 1.1em;
+  margin-top: 1.5em;
+  font-size: 32px;
+}
+
+.start-icon {
+  vertical-align: text-top;
+}
+
+.copyright {
+  color: red;
 }

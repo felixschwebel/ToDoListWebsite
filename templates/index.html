@@ -20,7 +20,35 @@ body {
     </ul>
 {% endblock %}
 
+
 {% block content %}
-    <div class="logo container">ToDoList</div>
-    <div class="normal-text container">start keeping track of your todo's</div>
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3 class="logo">ToDoList</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3 class="normal-text">start keeping track of your todo's</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+
+                <button type="button" class="btn btn-dark btn-lg start-button shadow">
+                    <span class="start-icon google-icon material-symbols-outlined">add_box</span>
+                    Start now!
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+    <div class="container-fluid content">
+      <p>© designed and coded by Felix Schwebel, Picture by Leone Venter - unsplashed.com</p>
+    </div>
+  </footer>
+
 {% endblock %}
