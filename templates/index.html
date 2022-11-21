@@ -4,6 +4,7 @@
 body {
     background-image: url("{{url_for('static', filename='img/leone-venter-VieM9BdZKFo-unsplash.jpg')}}");
     background-size: cover;
+    background-repeat: no-repeat;
 }
 {% endblock %}
 
@@ -14,9 +15,7 @@ body {
         <li class="nav-item nav-text nav-link link-dark px-2">
             <span class="google-icon material-symbols-outlined">login</span>
         </li>
-        <li class="nav-item"><a href="#" class="nav-text nav-link link-dark px-2">Login</a></li>
-        <li class="nav-item nav-text nav-link link-dark px-2">/</li>
-        <li class="nav-item"><a href="#" class="nav-text nav-link link-dark px-2">Sign up</a></li>
+        <li class="nav-item"><a href="#" class="nav-text nav-link link-dark px-2">Login / Sign up</a></li>
     </ul>
 {% endblock %}
 
@@ -36,7 +35,7 @@ body {
         <div class="row">
             <div class="col-lg-3">
 
-                <button type="button" class="btn btn-dark btn-lg start-button shadow">
+                <button type="button" class="btn btn-dark start-button shadow">
                     <span class="start-icon google-icon material-symbols-outlined">add_box</span>
                     Start now!
                 </button>
