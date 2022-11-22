@@ -59,6 +59,26 @@ input {
     font-size: 32px;
 }
 
+.headline-button {
+  margin-top: 3.5em;
+  margin-left: 10%;
+  font-size: 2em;
+  padding: 0 5%;
+}
+
+.custom-list {
+  padding: 1% 2%;
+  font-size: 26px;
+}
+
+.input-group {
+  font-size: 24px;
+  padding: 1% 15%;
+}
+
+.bullet-points {
+  padding-left: 3%;
+}
 
 .nav-text {
     font-size: 24px;
@@ -119,6 +139,10 @@ input {
   margin-top: 1.5em;
   font-size: 20px;
   padding: 0.1em 0.8em;
+}
+
+#list-overview {
+  padding-left: 15%;
 }
 
 #sign-button {

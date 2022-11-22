@@ -7,11 +7,6 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav func-card">
-      <li class="nav-item nav-text func-item small-nav-box">
-        <a class="nav-link" href="{{url_for('all_lists')}}">
-            <span class="google-icon material-symbols-outlined">library_books</span>
-            Your Lists</a>
-      </li>
       <li class="nav-item nav-text func-item">
         <a class="nav-link" href="{{url_for('new_list')}}">
             <span class="google-icon material-symbols-outlined">playlist_add</span>
@@ -22,31 +17,28 @@
             <span class="google-icon material-symbols-outlined">logout</span>
             Logout</a>
       </li>
-
     </ul>
   </div>
 {% endblock %}
 
 
 {% block content %}
-    <p class="button btn btn-dark headline-button shadow">Groceries List</p>
+    <p class="button btn btn-dark headline-button shadow">Your Lists</p>
 
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Tomatoes</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Cucumber</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Bread</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Shampoo</div>
-    </div>
+    <ul id="list-overview">
+        <li class="custom-list">
+             <a class="nav-link" href="#">Groceries List</a>
+        </li>
+        <li class="custom-list">
+            <a class="nav-link" href="#">Things to do</a>
+        </li>
+        <li class="custom-list">
+             <a class="nav-link" href="#">Next Vacation</a>
+        </li>
+        <li class="custom-list">
+             <a class="nav-link" href="#">Study Subjects</a>
+        </li>
+    </ul>
 
 
     <footer class="footer">

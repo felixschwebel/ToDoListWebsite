@@ -12,11 +12,6 @@
             <span class="google-icon material-symbols-outlined">library_books</span>
             Your Lists</a>
       </li>
-      <li class="nav-item nav-text func-item">
-        <a class="nav-link" href="{{url_for('new_list')}}">
-            <span class="google-icon material-symbols-outlined">playlist_add</span>
-            Create new list</a>
-      </li>
       <li class="nav-item nav-text func-item small-nav-box">
         <a class="nav-link" href="{{url_for('logout')}}">
             <span class="google-icon material-symbols-outlined">logout</span>
@@ -25,29 +20,12 @@
 
     </ul>
   </div>
+
+
 {% endblock %}
 
 
 {% block content %}
-    <p class="button btn btn-dark headline-button shadow">Groceries List</p>
-
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Tomatoes</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Cucumber</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Bread</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Shampoo</div>
-    </div>
-
 
     <footer class="footer">
         <div class="container-fluid content">
