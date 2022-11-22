@@ -27,6 +27,23 @@ input {
   width: 100% !important;
 }
 
+.func-card {
+  padding-top: 3.5em;
+  background-color: #9CE49F;
+  padding-bottom: 1em;
+}
+
+.nav-item {
+  padding-right: 5%;
+  text-align: right;
+}
+
+.toggler-icon {
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
+}
+
 .google-icon {
   font-size: 35px;
   vertical-align: top;
@@ -87,7 +104,7 @@ input {
   padding-top: 1em;
 }
 
-#log-signup {
+.log-signup {
   position: absolute;
   right: 0;
   padding-right: 5%;
@@ -111,7 +128,9 @@ input {
   padding: 0.1em 0.8em;
 }
 
-@media (max-width: 768px) {
+
+
+@media (max-width: 768px){
   #acc-quest {
     padding-top: 1.8em;
   }
@@ -123,3 +142,25 @@ input {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
+
+}
+
+
+@media (min-width: 992px) {
+  .func-item {
+    padding: 0;
+    width: 12em;
+  }
+
+  .func-card {
+    padding: 0 0 0 0;
+    position: absolute;
+    right: 0;
+    padding-right: 5%;
+  }
+
+  .small-nav-box {
+    width: 9em;
+  }
+
+}

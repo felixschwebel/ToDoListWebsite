@@ -1,9 +1,32 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block navbar %}
-    <div class="nav-logo">
-        <a href="{{url_for('home')}}" class="nav-link">ToDoList</a>
-    </div>
+    <a href="{{url_for('home')}}" class="navbar-brand nav-logo">ToDoList</a>
+  <button class="navbar-toggler toggler-icon" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav func-card">
+      <li class="nav-item nav-text func-item small-nav-box">
+        <a class="nav-link" href="#">
+            <span class="google-icon material-symbols-outlined">library_books</span>
+            Your Lists</a>
+      </li>
+      <li class="nav-item nav-text func-item">
+        <a class="nav-link" href="#">
+            <span class="google-icon material-symbols-outlined">playlist_add</span>
+            Create new list</a>
+      </li>
+      <li class="nav-item nav-text func-item small-nav-box">
+        <a class="nav-link" href="#">
+            <span class="google-icon material-symbols-outlined">logout</span>
+            Logout</a>
+      </li>
+
+    </ul>
+  </div>
+
+
 {% endblock %}
 
 
