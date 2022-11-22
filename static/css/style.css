@@ -9,7 +9,7 @@ nav {
 }
 
 
-button {
+.button {
   background-color: #9CE49F !important;
   border-color: black !important;
   border-radius: 2em !important;
@@ -35,7 +35,7 @@ input {
 .logo {
     font-family: 'Reenie Beanie', cursive;
     font-size: 9em;
-    padding-top: 10%;
+    padding-top: 0.7em;
 }
 
 .normal-text {
@@ -71,7 +71,7 @@ input {
   width: 100%;
   position: static;
   bottom: 2%;
-  padding-top: 5em;
+  padding-top: 8.5em;
 }
 
 .nav-logo {
@@ -84,7 +84,7 @@ input {
 
 #greeting {
   font-size: 96px;
-  padding-top: 1.5em;
+  padding-top: 1em;
 }
 
 #log-signup {
@@ -112,13 +112,14 @@ input {
 }
 
 @media (max-width: 768px) {
+  #acc-quest {
+    padding-top: 1.8em;
+  }
+
   #sign-button {
     margin: 1em 0 0;
     position: absolute;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-  }
-  #acc-quest {
-    padding-top: 1.5em;
   }

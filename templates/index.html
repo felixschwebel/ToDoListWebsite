@@ -11,7 +11,7 @@ body {
 
 {% block navbar %}
     <div id="log-signup">
-        <a href="#" class="nav-text nav-link navbar-brand">
+        <a href="{{url_for('login')}}" class="nav-text nav-link navbar-brand">
         <span class="google-icon material-symbols-outlined">login</span>
         Login / Sign up
         </a>
@@ -36,10 +36,10 @@ body {
         <div class="row">
             <div class="col-lg-3">
 
-                <button type="button" class="btn btn-dark start-button shadow">
+                <a class="button btn btn-dark start-button shadow" href="{{url_for('newlist')}}">
                     <span class="start-icon google-icon material-symbols-outlined">add_box</span>
                     Start now!
-                </button>
+                </a>
             </div>
         </div>
     </div>
