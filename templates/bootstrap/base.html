@@ -28,10 +28,8 @@
 
 <body>
 
-    <nav class="nav-bar py-2 border-bottom">
-        <div class="container d-flex flex-wrap">
-           {% block navbar %} {% endblock %}
-        </div>
+    <nav class="navbar fixed-top">
+        {% block navbar %} {% endblock %}
     </nav>
 
   {% block content %}{% endblock %}

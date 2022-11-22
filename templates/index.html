@@ -5,30 +5,31 @@ body {
     background-image: url("{{url_for('static', filename='img/leone-venter-VieM9BdZKFo-unsplash.jpg')}}");
     background-size: cover;
     background-repeat: no-repeat;
+    height: 100vh;
 }
 {% endblock %}
 
 {% block navbar %}
-    <ul class="nav me-auto">
-    </ul>
-    <ul class="nav">
-        <li class="nav-item nav-text nav-link link-dark px-2">
-            <span class="google-icon material-symbols-outlined">login</span>
-        </li>
-        <li class="nav-item"><a href="#" class="nav-text nav-link link-dark px-2">Login / Sign up</a></li>
-    </ul>
+    <div id="log-signup">
+        <a href="#" class="nav-text nav-link navbar-brand">
+        <span class="google-icon material-symbols-outlined">login</span>
+        Login / Sign up
+        </a>
+    </div>
+
+
 {% endblock %}
 
 
 {% block content %}
     <div class="content">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-12">
                 <h3 class="logo">ToDoList</h3>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-12">
                 <h3 class="normal-text">start keeping track of your todo's</h3>
             </div>
         </div>

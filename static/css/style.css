@@ -5,7 +5,9 @@ body {
 
 nav {
     background-color: #9CE49F;
+    height: 70px !important;
 }
+
 
 button {
   background-color: #9CE49F !important;
@@ -14,9 +16,20 @@ button {
   color: black !important;
 }
 
+label {
+  font-size: 32px;
+  padding: 5% 0;
+}
+
+input {
+  background-color: #D9D9D9 !important;
+  border-radius: 2em !important;
+  width: 100% !important;
+}
+
 .google-icon {
   font-size: 35px;
-  vertical-align: baseline;
+  vertical-align: top;
 }
 
 .logo {
@@ -34,8 +47,13 @@ button {
     font-size: 24px;
 }
 
+.nav {
+  padding-top: 9px !important;
+}
+
 .content {
   padding-left: 10%;
+  padding-right: 10%;
 }
 
 .start-button {
@@ -51,6 +69,56 @@ button {
 
 .footer {
   width: 100%;
-  position: absolute;
+  position: static;
   bottom: 2%;
+  padding-top: 5em;
 }
+
+.nav-logo {
+  position: absolute;
+  padding-left: 0.5em;
+  font-family: 'Reenie Beanie', cursive;
+  font-size: 3em;
+
+}
+
+#greeting {
+  font-size: 96px;
+  padding-top: 1.5em;
+}
+
+#log-signup {
+  position: absolute;
+  right: 0;
+  padding-right: 5%;
+}
+
+#acc-quest {
+  font-size: 24px;
+  padding: 25% 0 0 20%;
+}
+
+#log-button {
+  margin-top: 1.5em;
+  font-size: 20px;
+  padding: 0.1em 0.8em;
+}
+
+#sign-button {
+  margin-top: 0.2em;
+  margin-left: 20%;
+  font-size: 24px;
+  padding: 0.1em 0.8em;
+}
+
+@media (max-width: 768px) {
+  #sign-button {
+    margin: 1em 0 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  #acc-quest {
+    padding-top: 1.5em;
+  }
