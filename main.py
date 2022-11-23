@@ -5,7 +5,7 @@ from wtforms import EmailField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Query
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
 
@@ -83,7 +83,7 @@ def login():
             if user:
                 if check_password_hash(password=password, pwhash=user.password):
                     login_user(user)
-                    return redirect(url_for('all_lists'))
+                    return redirect(url_for('all_lists', owner_id=current_user.id))
                 else:
                     flash("Password incorrect. Please try again!")
                     return redirect(url_for("login"))
@@ -109,7 +109,7 @@ def register():
             db.session.commit()
 
             login_user(new_user)
-            return redirect(url_for('all_lists'))
+            return redirect(url_for('all_lists', owner_id=current_user.id))
     return render_template('register.html', form=register_form)
 
 
@@ -119,10 +119,17 @@ def todo_list():
     return render_template('list.html')
 
 
-@app.route('/alllists')
+@app.route('/alllists/<int:owner_id>')
 @login_required
-def all_lists():
-    return render_template('all_lists.html')
+def all_lists(owner_id):
+    any_item = ToDoLists.query.filter_by(owner_id=owner_id).first()
+    if any_item is None:
+        items = 0
+    else:
+        items = 10
+    all_todolists = db.session.execute(db.select(ToDoLists).filter_by(owner_id=owner_id)).scalars()
+
+    return render_template('all_lists.html', todolists=all_todolists, items=items)
 
 
 @app.route('/newlist')

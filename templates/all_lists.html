@@ -25,20 +25,19 @@
 {% block content %}
     <p class="button btn btn-dark headline-button shadow">Your Lists</p>
 
-    <ul id="list-overview">
-        <li class="custom-list">
-             <a class="nav-link" href="#">Groceries List</a>
-        </li>
-        <li class="custom-list">
-            <a class="nav-link" href="#">Things to do</a>
-        </li>
-        <li class="custom-list">
-             <a class="nav-link" href="#">Next Vacation</a>
-        </li>
-        <li class="custom-list">
-             <a class="nav-link" href="#">Study Subjects</a>
-        </li>
-    </ul>
+
+        {% if items == 0: %}
+            <p class="flash-message content">You don't have any ToDoLists yet.</p>
+        {% else: %}
+        <ul id="list-overview">
+            {% for item in todolists: %}
+                <li class="custom-list">
+                    <a class="nav-link" href="#">{{item.list_title}}</a>
+                </li>
+            {% endfor %}
+         </ul>
+        {% endif %}
+
 
 
     <footer class="footer">
