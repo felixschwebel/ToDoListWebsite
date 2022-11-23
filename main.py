@@ -68,6 +68,7 @@ with app.app_context():
 
 @app.route('/')
 def home():
+    logout_user()
     return render_template('index.html')
 
 
@@ -106,6 +107,8 @@ def register():
                                                        method='pbkdf2:sha256', salt_length=8)
             db.session.add(new_user)
             db.session.commit()
+
+            login_user(new_user)
             return redirect(url_for('all_lists'))
     return render_template('register.html', form=register_form)
 
@@ -123,6 +126,7 @@ def all_lists():
 
 
 @app.route('/newlist')
+@login_required
 def new_list():
     return render_template('new_list.html')
 
