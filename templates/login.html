@@ -16,23 +16,17 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-12">
-                <form>
-                  <div class="form-group">
-                    <label for="formEmailInput">Your Email</label>
-                    <input type="text" class="form-control" id="formEmailInput" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <label for="formPasswordInput">Your Password</label>
-                    <input type="password" class="form-control" id="formPasswordInput" placeholder="Password">
-                  </div>
-                </form>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <button type="button" class="button btn btn-dark shadow" id="log-button">
-                            Login
-                        </button>
+                <form method="POST" action="{{ url_for('login') }}">
+                    {{ form.csrf_token }}
+                    {{ form.email.label('Your Email') }} {{ form.email(placeholder="Email", class='form-control') }}
+                    {{ form.password.label('Your Password') }} {{form.password(placeholder="Password", class='form-control') }}
+
+                    <div class="row">
+                        <div class="col-4">
+                            <input type="submit" value="Log In" class="button btn btn-dark shadow log-button">
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-md-6 col-sm-12">
                 <p id="acc-quest">Don't have an account yet?</p>

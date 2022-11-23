@@ -135,10 +135,11 @@ input {
   padding: 25% 0 0 20%;
 }
 
-#log-button {
+.log-button {
   margin-top: 1.5em;
   font-size: 20px;
   padding: 0.1em 0.8em;
+  text-align: center;
 }
 
 #list-overview {
