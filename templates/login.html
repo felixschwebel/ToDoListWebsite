@@ -20,7 +20,13 @@
                     {{ form.csrf_token }}
                     {{ form.email.label('Your Email') }} {{ form.email(placeholder="Email", class='form-control') }}
                     {{ form.password.label('Your Password') }} {{form.password(placeholder="Password", class='form-control') }}
-
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages: %}
+                            {% for message in messages: %}
+                                <p class="flash-message">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                     <div class="row">
                         <div class="col-4">
                             <input type="submit" value="Log in" class="button btn btn-dark shadow log-button">

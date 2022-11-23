@@ -49,6 +49,12 @@ input {
   vertical-align: top;
 }
 
+.flash-message {
+  color: red;
+  font-weight: bold;
+  padding-top: 1em;
+}
+
 .logo {
     font-family: 'Reenie Beanie', cursive;
     font-size: 9em;

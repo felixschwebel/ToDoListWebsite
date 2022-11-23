@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField
@@ -74,27 +74,39 @@ def home():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
-    if login_form.validate_on_submit():
-        email = login_form.email.data
-        password = login_form.password.data
-        user = User.query.filter_by(email=email).first()
-
-        if user:
-            if check_password_hash(password=password, pwhash=user.password):
-                login_user(user)
-                return redirect(url_for('all_lists'))
+    if request.method == "POST":
+        if login_form.validate_on_submit():
+            email = login_form.email.data
+            password = login_form.password.data
+            user = User.query.filter_by(email=email).first()
+            if user:
+                if check_password_hash(password=password, pwhash=user.password):
+                    login_user(user)
+                    return redirect(url_for('all_lists'))
+                else:
+                    flash("Password incorrect. Please try again!")
+                    return redirect(url_for("login"))
             else:
-                flash("Password incorrect. Please try again!")
+                flash("That user does not exist. Please try again or sign up.")
                 return redirect(url_for("login"))
-        else:
-            flash("That user does not exist. Please try again or sign up.")
-            return redirect(url_for("login"))
     return render_template('login.html', form=login_form)
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     register_form = LoginForm()
+    if request.method == "POST":
+        if User.query.filter_by(email=register_form.email.data).first() is not None:
+            flash("You have an account already, please login instead!")
+            return redirect(url_for("login"))
+        else:
+            new_user = User()
+            new_user.email = register_form.email.data
+            new_user.password = generate_password_hash(password=register_form.password.data,
+                                                       method='pbkdf2:sha256', salt_length=8)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('all_lists'))
     return render_template('register.html', form=register_form)
 
 
