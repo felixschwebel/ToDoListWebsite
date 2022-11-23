@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField
@@ -10,7 +10,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import os
 
 
-class MyForm(FlaskForm):
+class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])
     submit = SubmitField(label='Log In')
@@ -48,8 +48,8 @@ with app.app_context():
         __tablename__ = "todolists"
         id = db.Column(db.Integer, primary_key=True)
         list_title = db.Column(db.String(250), unique=True, nullable=False)
-        owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
         # Relationships
+        owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
         owner = relationship("User", back_populates="lists")
         tasks = relationship("Tasks", back_populates="list")
 
@@ -58,6 +58,8 @@ with app.app_context():
         id = db.Column(db.Integer, primary_key=True)
         text = db.Column(db.String(250), nullable=False)
         # Relationships
+        owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+        list_id = db.Column(db.Integer, db.ForeignKey("todolists.id"))
         list = relationship("ToDoLists", back_populates="tasks")
         owner = relationship("User", back_populates="tasks")
 
@@ -71,19 +73,39 @@ def home():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    login_form = MyForm()
+    login_form = LoginForm()
     if login_form.validate_on_submit():
-        print(login_form.email.data)
-        print(login_form.password.data)
+        email = login_form.email.data
+        password = login_form.password.data
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            if check_password_hash(password=password, pwhash=user.password):
+                login_user(user)
+                return redirect(url_for('all_lists'))
+            else:
+                flash("Password incorrect. Please try again!")
+                return redirect(url_for("login"))
+        else:
+            flash("That user does not exist. Please try again or sign up.")
+            return redirect(url_for("login"))
     return render_template('login.html', form=login_form)
 
 
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    register_form = LoginForm()
+    return render_template('register.html', form=register_form)
+
+
 @app.route('/list')
-def list():
+@login_required
+def todo_list():
     return render_template('list.html')
 
 
 @app.route('/alllists')
+@login_required
 def all_lists():
     return render_template('all_lists.html')
 
@@ -95,6 +117,7 @@ def new_list():
 
 @app.route('/logout')
 def logout():
+    logout_user()
     return redirect(url_for('home'))
 
 

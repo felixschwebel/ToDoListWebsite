@@ -1,5 +1,14 @@
 {% extends 'bootstrap/base.html' %}
 
+{% block styling %}
+body {
+    background-image: url("{{url_for('static', filename='img/leone-venter-VieM9BdZKFo-unsplash.jpg')}}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+{% endblock %}
+
 {% block navbar %}
     <div class="nav-logo">
         <a href="{{url_for('home')}}" class="nav-link">ToDoList</a>
@@ -11,28 +20,24 @@
     <div class="content">
         <div class="row">
             <div class="col-12">
-                <h1 id="greeting">Hi!</h1>
+                <h1 id="new-user-greeting">Nice to have you here!</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-12">
-                <form method="POST" action="{{ url_for('login') }}">
+                <form method="POST" action="{{ url_for('register') }}">
                     {{ form.csrf_token }}
                     {{ form.email.label('Your Email') }} {{ form.email(placeholder="Email", class='form-control') }}
                     {{ form.password.label('Your Password') }} {{form.password(placeholder="Password", class='form-control') }}
 
                     <div class="row">
                         <div class="col-4">
-                            <input type="submit" value="Log in" class="button btn btn-dark shadow log-button">
+                            <input type="submit" value="Register" class="button btn btn-dark shadow log-button">
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <p id="acc-quest">Don't have an account yet?</p>
-                <a type="button" class="button btn btn-dark shadow" id="sign-button" href="{{url_for('register')}}">
-                    Sign Up!
-                </a>
+                <div id="disclaimer">DISCLAIMER: This is just a prototype. You can test all the functionalities but
+                    to protect your data please don't use any sensitive information/data!</div>
             </div>
         </div>
     </div>
