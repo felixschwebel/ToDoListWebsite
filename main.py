@@ -3,6 +3,10 @@ from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
+from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
 
 
@@ -14,7 +18,50 @@ class MyForm(FlaskForm):
 
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
-app.secret_key = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+
+with app.app_context():
+    # Connect to Database
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///users.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db = SQLAlchemy(app)
+
+    # Manage Login
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    # Table Configuration
+    class User(db.Model, UserMixin):
+        __tablename__ = "users"
+        id = db.Column(db.Integer, primary_key=True)
+        email = db.Column(db.String(100), unique=True)
+        password = db.Column(db.String(100))
+        # Relationships
+        lists = relationship("ToDoLists", back_populates="owner")
+        tasks = relationship("Tasks", back_populates="owner")
+
+    class ToDoLists(db.Model):
+        __tablename__ = "todolists"
+        id = db.Column(db.Integer, primary_key=True)
+        list_title = db.Column(db.String(250), unique=True, nullable=False)
+        owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+        # Relationships
+        owner = relationship("User", back_populates="lists")
+        tasks = relationship("Tasks", back_populates="list")
+
+    class Tasks(db.Model):
+        __tablename__ = "tasks"
+        id = db.Column(db.Integer, primary_key=True)
+        text = db.Column(db.String(250), nullable=False)
+        # Relationships
+        list = relationship("ToDoLists", back_populates="tasks")
+        owner = relationship("User", back_populates="tasks")
+
+    db.create_all()
 
 
 @app.route('/')
