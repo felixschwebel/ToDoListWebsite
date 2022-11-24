@@ -10,6 +10,8 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 import os
 
 
+
+
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])

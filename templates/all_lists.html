@@ -1,5 +1,15 @@
 {% extends 'bootstrap/base.html' %}
 
+{% block styling %}
+body {
+    background-image: url("{{url_for('static', filename='img/leone-venter-VieM9BdZKFo-unsplash.jpg')}}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+{% endblock %}
+
+
 {% block navbar %}
     <a href="{{url_for('home')}}" class="navbar-brand nav-logo">ToDoList</a>
   <button class="navbar-toggler toggler-icon" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
