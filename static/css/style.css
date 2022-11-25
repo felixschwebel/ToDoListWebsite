@@ -72,6 +72,13 @@ input {
   padding: 0 5%;
 }
 
+#button-input {
+  margin-top: 3.5em;
+  font-size: 2em;
+  padding: 0 5%;
+  text-align: left;
+}
+
 .custom-list {
   padding: 1% 2%;
   font-size: 26px;

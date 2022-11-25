@@ -1,15 +1,14 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, SubmitField
+from wtforms import EmailField, PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, Query
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
-
-
+from flask_ckeditor import CKEditor, CKEditorField
 
 
 class LoginForm(FlaskForm):
@@ -18,8 +17,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log In')
 
 
+class ToDoListForm(FlaskForm):
+    list_title = StringField(label='Title', validators=[DataRequired()])
+    body = CKEditorField(label='Body')
+    submit = SubmitField(label='submit')
+
+
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
+ckeditor = CKEditor(app)
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 with app.app_context():
@@ -134,10 +140,14 @@ def all_lists(owner_id):
     return render_template('all_lists.html', todolists=all_todolists, items=items)
 
 
-@app.route('/newlist')
+@app.route('/newlist', methods=['POST', 'GET'])
 @login_required
 def new_list():
-    return render_template('new_list.html')
+    user_todos = ToDoListForm()
+    if request.method == 'POST':
+        data = request.form.get('ckeditor')
+        print(data)
+    return render_template('new_list.html', form=user_todos)
 
 
 @app.route('/logout')
