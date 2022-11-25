@@ -11,6 +11,9 @@ import os
 from flask_ckeditor import CKEditor, CKEditorField
 
 
+def extract_tasks(data):
+    return [item.strip() for item in data.split(",")]
+
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])
@@ -122,10 +125,13 @@ def register():
     return render_template('register.html', form=register_form)
 
 
-@app.route('/list')
+@app.route('/list/<int:list_id>')
 @login_required
-def todo_list():
-    return render_template('list.html')
+def todo_list(list_id):
+    title = ToDoLists.query.get(list_id).list_title
+    data = Tasks.query.get(list_id).text
+    todos = extract_tasks(data)
+    return render_template('list.html', title=title, todos=todos)
 
 
 @app.route('/alllists/<int:owner_id>')
@@ -161,10 +167,7 @@ def new_list():
             )
             db.session.add(new_tasks)
             db.session.commit()
-            return redirect(url_for('new_list'))
-
-    if request.method == 'GET':
-        print("YEAH!")
+            return redirect(url_for('todo_list', list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id))
     return render_template('new_list.html', form=user_form)
 
 

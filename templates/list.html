@@ -8,7 +8,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav func-card">
       <li class="nav-item nav-text func-item small-nav-box">
-        <a class="nav-link" href="{{url_for('all_lists')}}">
+        <a class="nav-link" href="{{url_for('all_lists', owner_id=current_user.id)}}">
             <span class="google-icon material-symbols-outlined">library_books</span>
             Your Lists</a>
       </li>
@@ -29,24 +29,14 @@
 
 
 {% block content %}
-    <p class="button btn btn-dark headline-button shadow">Groceries List</p>
+    <p class="button btn btn-dark headline-button shadow">{{ title }}</p>
 
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Tomatoes</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Cucumber</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Bread</div>
-    </div>
-    <div class="input-group">
-        <div><input type="checkbox"></div>
-        <div class="bullet-points">Shampoo</div>
-    </div>
+    {% for item in todos: %}
+        <div class="input-group">
+            <div><input type="checkbox"></div>
+            <div class="bullet-points">{{ item }}</div>
+        </div>
+    {% endfor %}
 
 
     <footer class="footer">
