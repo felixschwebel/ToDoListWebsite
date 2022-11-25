@@ -67,9 +67,10 @@ with app.app_context():
         text = db.Column(db.String(250), nullable=False)
         # Relationships
         owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+        owner = relationship("User", back_populates="tasks")
         list_id = db.Column(db.Integer, db.ForeignKey("todolists.id"))
         list = relationship("ToDoLists", back_populates="tasks")
-        owner = relationship("User", back_populates="tasks")
+
 
     db.create_all()
 
@@ -143,11 +144,28 @@ def all_lists(owner_id):
 @app.route('/newlist', methods=['POST', 'GET'])
 @login_required
 def new_list():
-    user_todos = ToDoListForm()
+    user_form = ToDoListForm()
     if request.method == 'POST':
-        data = request.form.get('ckeditor')
-        print(data)
-    return render_template('new_list.html', form=user_todos)
+        if user_form.validate_on_submit():
+            new_todolist = ToDoLists(
+                list_title=user_form.list_title.data,
+                owner_id=current_user.id,
+            )
+            db.session.add(new_todolist)
+            db.session.commit()
+
+            new_tasks = Tasks(
+                text=user_form.body.data.strip('<p>').replace('</p>', "").strip(),
+                owner_id=current_user.id,
+                list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id
+            )
+            db.session.add(new_tasks)
+            db.session.commit()
+            return redirect(url_for('new_list'))
+
+    if request.method == 'GET':
+        print("YEAH!")
+    return render_template('new_list.html', form=user_form)
 
 
 @app.route('/logout')
