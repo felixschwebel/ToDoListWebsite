@@ -38,11 +38,14 @@ body {
 
         {% if items == 0: %}
             <p class="flash-message content">You don't have any ToDoLists yet.</p>
+            <a class="nav-link content flash-message" href="{{url_for('new_list')}}">
+            <span class="google-icon material-symbols-outlined">playlist_add</span>
+            Create new list</a>
         {% else: %}
         <ul id="list-overview">
             {% for item in todolists: %}
                 <li class="custom-list">
-                    <a class="nav-link" href="#">{{item.list_title}}</a>
+                    <a class="nav-link" href="{{url_for('todo_list', list_id=item.id)}}">{{item.list_title}}</a>
                 </li>
             {% endfor %}
          </ul>

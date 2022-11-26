@@ -160,6 +160,7 @@ def new_list():
             db.session.add(new_todolist)
             db.session.commit()
 
+            print(user_form.body.data.strip('<p>').replace('</p>', "").replace('&nbsp', "").strip())
             new_tasks = Tasks(
                 text=user_form.body.data.strip('<p>').replace('</p>', "").strip(),
                 owner_id=current_user.id,
