@@ -68,6 +68,7 @@ with app.app_context():
         __tablename__ = "tasks"
         id = db.Column(db.Integer, primary_key=True)
         text = db.Column(db.String(250), nullable=False)
+        checked = db.Column(db.Boolean)
         # Relationships
         owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
         owner = relationship("User", back_populates="tasks")
@@ -129,8 +130,7 @@ def register():
 @login_required
 def todo_list(list_id):
     title = ToDoLists.query.get(list_id).list_title
-    data = Tasks.query.get(list_id).text
-    todos = extract_tasks(data)
+    todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id)).scalars()
     return render_template('list.html', title=title, todos=todos)
 
 
@@ -160,14 +160,16 @@ def new_list():
             db.session.add(new_todolist)
             db.session.commit()
 
-            print(user_form.body.data.strip('<p>').replace('</p>', "").replace('&nbsp', "").strip())
-            new_tasks = Tasks(
-                text=user_form.body.data.strip('<p>').replace('</p>', "").strip(),
-                owner_id=current_user.id,
-                list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id
-            )
-            db.session.add(new_tasks)
-            db.session.commit()
+            data = user_form.body.data.strip('<p>').replace('</p>', "").replace('&nbsp', "").strip()
+            todos = extract_tasks(data)
+            for task in todos:
+                new_tasks = Tasks(
+                    text=task,
+                    owner_id=current_user.id,
+                    list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id
+                )
+                db.session.add(new_tasks)
+                db.session.commit()
             return redirect(url_for('todo_list', list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id))
     return render_template('new_list.html', form=user_form)
 
