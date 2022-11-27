@@ -31,13 +31,21 @@
 {% block content %}
     <p class="button btn btn-dark headline-button shadow">{{ title }}</p>
 
-    {% for item in todos: %}
-        <div class="input-group">
-            <div><input type="checkbox"></div>
-            <div class="bullet-points">{{ item.text }}</div>
+    <form method="POST">
+        {% for item in todos: %}
+            <div class="input-group">
+                {% if item.checked == 1: %}
+                    <div><input type="checkbox" name="{{ item.id }}" value="1" checked></div>
+                {% else: %}
+                    <div><input type="checkbox" name="{{ item.id }}" value="1"></div>
+                {% endif %}
+                <div class="bullet-points">{{ item.text }}</div>
+            </div>
+        {% endfor %}
+        <div class="content">
+            <input class="button btn btn-dark shadow log-button" type="submit" value="Save">
         </div>
-    {% endfor %}
-
+    </form>
 
     <footer class="footer">
         <div class="container-fluid content">

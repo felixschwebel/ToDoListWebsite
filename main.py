@@ -126,11 +126,19 @@ def register():
     return render_template('register.html', form=register_form)
 
 
-@app.route('/list/<int:list_id>')
+@app.route('/list/<int:list_id>', methods=['POST', 'GET'])
 @login_required
 def todo_list(list_id):
     title = ToDoLists.query.get(list_id).list_title
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id)).scalars()
+    if request.method == 'POST':
+        response = request.values.lists()
+        for item in response:
+            task_to_update = Tasks.query.get(item[0])
+            task_to_update.checked = 1
+            db.session.commit()
+        todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id)).scalars()
+
     return render_template('list.html', title=title, todos=todos)
 
 
