@@ -12,6 +12,11 @@
             <span class="google-icon material-symbols-outlined">library_books</span>
             Your Lists</a>
       </li>
+      <li class="nav-item nav-text func-item">
+        <a class="nav-link" href="{{url_for('new_list')}}">
+            <span class="google-icon material-symbols-outlined">playlist_add</span>
+            Create new list</a>
+      </li>
       <li class="nav-item nav-text func-item small-nav-box">
         <a class="nav-link" href="{{url_for('logout')}}">
             <span class="google-icon material-symbols-outlined">logout</span>
@@ -20,23 +25,22 @@
 
     </ul>
   </div>
-
-
 {% endblock %}
 
 
 {% block content %}
-    {{ ckeditor.load(pkg_type="standard") }}
-    {{ ckeditor.config(name='body') }}
-
     <form method="POST" class="content">
-        {{ form.csrf_token }}
-        <p>{{ form.list_title(placeholder="Title of your List", class="button btn btn-dark shadow headline-input") }}</p>
+         <div>
+            <input type="text" class="button btn btn-dark shadow headline-input" name="title" value={{ title }}>
+        </div>
 
-        {{ form.body()}}
-         <input class="button btn btn-dark shadow log-button" type="submit" value="Save">
+        {% for item in todos: %}
+            <div>
+                <input class="edit-task" value="{{ item.text }}" name="{{ item.id }}">
+            </div>
+        {% endfor %}
+        <input class="button btn btn-dark shadow" id="save-button" type="submit" value="Save">
     </form>
-
 
     <footer class="footer">
         <div class="container-fluid content">

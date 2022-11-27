@@ -29,7 +29,9 @@
 
 
 {% block content %}
-    <p class="button btn btn-dark headline-button shadow">{{ title }}</p>
+    <div>
+        <p class="button btn btn-dark headline-button shadow">{{ title }}</p>
+    </div>
 
     <form method="POST">
         {% for item in todos: %}
@@ -43,9 +45,14 @@
             </div>
         {% endfor %}
         <div class="content">
-            <input class="button btn btn-dark shadow log-button" type="submit" value="Save">
+            <input class="button btn btn-dark shadow" id="save-button" type="submit" value="Save">
         </div>
     </form>
+
+    <div class="content">
+        <a class="button btn btn-dark shadow change-button" href="{{url_for('edit_list', list_id=list_id)}}">Change Something</a>
+        <a class="button btn btn-dark shadow change-button" href="{{url_for('delete_list', list_id=list_id)}}">Delete List</a>
+    </div>
 
     <footer class="footer">
         <div class="container-fluid content">

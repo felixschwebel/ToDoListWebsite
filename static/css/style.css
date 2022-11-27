@@ -72,12 +72,22 @@ input {
   padding: 0 5%;
 }
 
-#button-input {
+.headline-input {
   margin-top: 3.5em;
+  margin-right: 10%;
   font-size: 2em;
   padding: 0 5%;
   text-align: left;
 }
+
+.edit-task {
+  position: static;
+  margin-top: 3%;
+  margin-left: 5%;
+  padding-left: 1%;
+  width: 90% !important;
+}
+
 
 .custom-list {
   padding: 1% 2%;
@@ -194,6 +204,24 @@ input {
     transform: translate(-50%, -50%);
   }
 
+}
+
+#save-button {
+  margin-top: 1.5em;
+  margin-left: 5%;
+  font-size: 17px;
+  padding: 0.1em 0.8em;
+  text-align: center;
+  width: fit-content !important;
+}
+
+.change-button {
+  background-color: #CBCBCB !important;
+  margin-top: 1.5em;
+  font-size: 14px;
+  padding: 0.1em 0.8em;
+  text-align: center;
+  width: fit-content !important;
 }
 
 

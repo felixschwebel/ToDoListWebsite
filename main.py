@@ -5,7 +5,8 @@ from wtforms import EmailField, PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship, Query
+from sqlalchemy import asc
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
 from flask_ckeditor import CKEditor, CKEditorField
@@ -13,6 +14,7 @@ from flask_ckeditor import CKEditor, CKEditorField
 
 def extract_tasks(data):
     return [item.strip() for item in data.split(",")]
+
 
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired()])
@@ -130,16 +132,19 @@ def register():
 @login_required
 def todo_list(list_id):
     title = ToDoLists.query.get(list_id).list_title
-    todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id)).scalars()
+    todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
     if request.method == 'POST':
-        response = request.values.lists()
-        for item in response:
-            task_to_update = Tasks.query.get(item[0])
-            task_to_update.checked = 1
+        response = [int(i[0]) for i in request.values.lists()]
+        for index in todos:
+            if index.id in response:
+                task_to_update = Tasks.query.get(index.id)
+                task_to_update.checked = 1
+            else:
+                task_to_update = Tasks.query.get(index.id)
+                task_to_update.checked = 0
             db.session.commit()
-        todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id)).scalars()
-
-    return render_template('list.html', title=title, todos=todos)
+        return redirect(url_for('todo_list', list_id=list_id))
+    return render_template('list.html', title=title, todos=todos, list_id=list_id)
 
 
 @app.route('/alllists/<int:owner_id>')
@@ -180,6 +185,39 @@ def new_list():
                 db.session.commit()
             return redirect(url_for('todo_list', list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id))
     return render_template('new_list.html', form=user_form)
+
+
+@app.route('/edit/<int:list_id>', methods=['POST', 'GET'])
+@login_required
+def edit_list(list_id):
+    list_to_edit = ToDoLists.query.get(list_id)
+    edit_form = ToDoListForm()
+
+    title = ToDoLists.query.get(list_id).list_title
+    todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
+
+    if request.method == 'POST':
+        print("HEY!")
+        # response = [int(i[0]) for i in request.values.lists()]
+        # for index in todos:
+        #     if index.id in response:
+        #         task_to_update = Tasks.query.get(index.id)
+        #         task_to_update.checked = 1
+        #     else:
+        #         task_to_update = Tasks.query.get(index.id)
+        #         task_to_update.checked = 0
+        #     db.session.commit()
+        # return redirect(url_for('todo_list', list_id=list_id))
+    return render_template('edit_list.html', title=title, todos=todos, list_id=list_id)
+
+
+@app.route('/delete/<int:list_id>')
+@login_required
+def delete_list(list_id):
+    list_to_delete = ToDoLists.query.get(list_id)
+    db.session.delete(list_to_delete)
+    db.session.commit()
+    return redirect(url_for('all_lists', owner_id=current_user.id))
 
 
 @app.route('/logout')
