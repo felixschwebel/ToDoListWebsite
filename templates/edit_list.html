@@ -35,8 +35,13 @@
         </div>
 
         {% for item in todos: %}
-            <div>
-                <input class="edit-task" value="{{ item.text }}" name="{{ item.id }}">
+            <div class="row">
+                <div class="col-12">
+                    <input class="edit-task" value="{{ item.text }}" name="{{ item.id }}">
+                        <a href="{{url_for('delete_task', task_id=item.id, list_id=list_id)}}">
+                            <span class="google-icon material-symbols-outlined trash">delete</span>
+                        </a>
+                </div>
             </div>
         {% endfor %}
         <input class="button btn btn-dark shadow" id="save-button" type="submit" value="Save">

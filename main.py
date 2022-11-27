@@ -206,6 +206,13 @@ def edit_list(list_id):
         return redirect(url_for('todo_list', list_id=list_id))
     return render_template('edit_list.html', title=title, todos=todos, list_id=list_id)
 
+@app.route('/deletetask/<int:task_id>, <int:list_id>')
+@login_required
+def delete_task(task_id, list_id):
+    task_to_delete = Tasks.query.get(task_id)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect(url_for('edit_list', list_id=list_id))
 
 @app.route('/delete/<int:list_id>')
 @login_required

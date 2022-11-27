@@ -81,13 +81,20 @@ input {
 }
 
 .edit-task {
-  position: static;
   margin-top: 3%;
   margin-left: 5%;
   padding-left: 1%;
-  width: 90% !important;
+  width: 85% !important;
+  border-style: none;
 }
 
+.trash {
+  vertical-align: middle !important;
+  font-size: 28px !important;
+  color: red;
+  border-style: none;
+
+}
 
 .custom-list {
   padding: 1% 2%;
