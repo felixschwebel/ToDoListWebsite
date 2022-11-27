@@ -231,6 +231,10 @@ input {
   width: fit-content !important;
 }
 
+#change-buttons {
+  padding-left: 14%;
+}
+
 .change-button {
   background-color: #CBCBCB !important;
   margin-top: 1.5em;
