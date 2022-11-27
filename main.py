@@ -190,24 +190,20 @@ def new_list():
 @app.route('/edit/<int:list_id>', methods=['POST', 'GET'])
 @login_required
 def edit_list(list_id):
-    list_to_edit = ToDoLists.query.get(list_id)
-    edit_form = ToDoListForm()
-
     title = ToDoLists.query.get(list_id).list_title
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
 
     if request.method == 'POST':
-        print("HEY!")
-        # response = [int(i[0]) for i in request.values.lists()]
-        # for index in todos:
-        #     if index.id in response:
-        #         task_to_update = Tasks.query.get(index.id)
-        #         task_to_update.checked = 1
-        #     else:
-        #         task_to_update = Tasks.query.get(index.id)
-        #         task_to_update.checked = 0
-        #     db.session.commit()
-        # return redirect(url_for('todo_list', list_id=list_id))
+        response = request.values.lists()
+        for item in response:
+            if item[0] == 'title':
+                list_to_change = ToDoLists.query.get(list_id)
+                list_to_change.list_title = item[1][0]
+            else:
+                task = Tasks.query.get(int(item[0]))
+                task.text = item[1][0]
+            db.session.commit()
+        return redirect(url_for('todo_list', list_id=list_id))
     return render_template('edit_list.html', title=title, todos=todos, list_id=list_id)
 
 
