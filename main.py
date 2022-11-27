@@ -60,7 +60,7 @@ with app.app_context():
     class ToDoLists(db.Model):
         __tablename__ = "todolists"
         id = db.Column(db.Integer, primary_key=True)
-        list_title = db.Column(db.String(250), unique=True, nullable=False)
+        list_title = db.Column(db.String(250), nullable=False)
         # Relationships
         owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
         owner = relationship("User", back_populates="lists")
@@ -160,37 +160,19 @@ def all_lists(owner_id):
     return render_template('all_lists.html', todolists=all_todolists, items=items)
 
 
-@app.route('/newlist', methods=['POST', 'GET'])
+@app.route('/newlist')
 @login_required
 def new_list():
-    user_form = ToDoListForm()
-    if request.method == 'POST':
-        if user_form.validate_on_submit():
-            new_todolist = ToDoLists(
-                list_title=user_form.list_title.data,
-                owner_id=current_user.id,
-            )
-            db.session.add(new_todolist)
-            db.session.commit()
-
-            data = user_form.body.data.strip('<p>').replace('</p>', "").replace('&nbsp', "").strip()
-            todos = extract_tasks(data)
-            for task in todos:
-                new_tasks = Tasks(
-                    text=task,
-                    owner_id=current_user.id,
-                    list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id
-                )
-                db.session.add(new_tasks)
-                db.session.commit()
-            return redirect(url_for('todo_list', list_id=ToDoLists.query.filter_by(list_title=user_form.list_title.data).first().id))
-    return render_template('new_list.html', form=user_form)
+    list_to_add = ToDoLists(list_title="Start a new List!", owner_id=current_user.id)
+    db.session.add(list_to_add)
+    db.session.commit()
+    return redirect(url_for('all_lists', owner_id=current_user.id))
 
 
 @app.route('/edit/<int:list_id>', methods=['POST', 'GET'])
 @login_required
 def edit_list(list_id):
-    title = ToDoLists.query.get(list_id).list_title
+    title = ToDoLists.query.get(list_id)
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
 
     if request.method == 'POST':
@@ -204,7 +186,7 @@ def edit_list(list_id):
                 task.text = item[1][0]
             db.session.commit()
         return redirect(url_for('todo_list', list_id=list_id))
-    return render_template('edit_list.html', title=title, todos=todos, list_id=list_id)
+    return render_template('edit_list.html', title=title.list_title, todos=todos, list_id=list_id)
 
 
 @app.route('/addtask/<int:list_id>')

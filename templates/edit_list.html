@@ -31,7 +31,7 @@
 {% block content %}
     <form method="POST" class="content">
          <div>
-            <input type="text" class="button btn btn-dark shadow headline-input" name="title" value={{ title }}>
+            <input type="text" class="button btn btn-dark shadow headline-input" name="title" value="{{title}}">
         </div>
 
         {% for item in todos: %}
@@ -44,11 +44,6 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="row">
-            <a href="{{url_for('add_task', list_id=list_id)}}">
-                <span class="google-icon material-symbols-outlined" id="add-task">add</span>
-            </a>
-        </div>
         <input class="button btn btn-dark shadow" id="save-button" type="submit" value="Save">
     </form>
 
