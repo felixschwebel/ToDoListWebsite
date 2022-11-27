@@ -206,6 +206,16 @@ def edit_list(list_id):
         return redirect(url_for('todo_list', list_id=list_id))
     return render_template('edit_list.html', title=title, todos=todos, list_id=list_id)
 
+
+@app.route('/addtask/<int:list_id>')
+@login_required
+def add_task(list_id):
+    new_task = Tasks(text="", list_id=list_id)
+    db.session.add(new_task)
+    db.session.commit()
+    return redirect(url_for('edit_list', list_id=list_id))
+
+
 @app.route('/deletetask/<int:task_id>, <int:list_id>')
 @login_required
 def delete_task(task_id, list_id):
@@ -213,6 +223,7 @@ def delete_task(task_id, list_id):
     db.session.delete(task_to_delete)
     db.session.commit()
     return redirect(url_for('edit_list', list_id=list_id))
+
 
 @app.route('/delete/<int:list_id>')
 @login_required
