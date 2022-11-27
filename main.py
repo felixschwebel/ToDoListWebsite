@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, abort
 from flask_bootstrap import Bootstrap5
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, SubmitField, StringField
+from wtforms import EmailField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
@@ -9,28 +9,19 @@ from sqlalchemy import asc
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 import os
-from flask_ckeditor import CKEditor, CKEditorField
 
 
-def extract_tasks(data):
-    return [item.strip() for item in data.split(",")]
-
-
+# ---------- FORMS ----------
 class LoginForm(FlaskForm):
     email = EmailField(label='Email', validators=[DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])
     submit = SubmitField(label='Log In')
 
 
-class ToDoListForm(FlaskForm):
-    list_title = StringField(label='Title', validators=[DataRequired()])
-    body = CKEditorField(label='Body')
-    submit = SubmitField(label='submit')
-
+# ---------- Starts the Flask App ----------
 
 app = Flask(__name__)
 bootstrap = Bootstrap5(app)
-ckeditor = CKEditor(app)
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 with app.app_context():
@@ -47,7 +38,7 @@ with app.app_context():
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    # Table Configuration
+#  ---------- Table Configuration ----------
     class User(db.Model, UserMixin):
         __tablename__ = "users"
         id = db.Column(db.Integer, primary_key=True)
@@ -77,16 +68,23 @@ with app.app_context():
         list_id = db.Column(db.Integer, db.ForeignKey("todolists.id"))
         list = relationship("ToDoLists", back_populates="tasks")
 
-
     db.create_all()
 
+# ---------- FUNCTIONS ----------
+# Function to prevent a user accessing list from other users
+def id_check(list_id):
+    if ToDoLists.query.get(list_id).owner_id != current_user.id:
+        return abort(403)
 
+
+# ---------- ROUTE FUNCTIONS ----------
 @app.route('/')
 def home():
     logout_user()
     return render_template('index.html')
 
 
+# --- USER MANAGEMENT ---
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
@@ -128,9 +126,18 @@ def register():
     return render_template('register.html', form=register_form)
 
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+# --- SHOW LISTS ---
 @app.route('/list/<int:list_id>', methods=['POST', 'GET'])
 @login_required
 def todo_list(list_id):
+    id_check(list_id)
+
     title = ToDoLists.query.get(list_id).list_title
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
     if request.method == 'POST':
@@ -143,13 +150,17 @@ def todo_list(list_id):
                 task_to_update = Tasks.query.get(index.id)
                 task_to_update.checked = 0
             db.session.commit()
-        return redirect(url_for('todo_list', list_id=list_id))
-    return render_template('list.html', title=title, todos=todos, list_id=list_id)
+        return redirect(url_for('todo_list', list_id=list_id, logged_in=current_user.is_authenticated))
+    return render_template('list.html', title=title, todos=todos, list_id=list_id,
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/alllists/<int:owner_id>')
 @login_required
 def all_lists(owner_id):
+    if owner_id != current_user.id:
+        return abort(403)
+
     any_item = ToDoLists.query.filter_by(owner_id=owner_id).first()
     if any_item is None:
         items = 0
@@ -157,21 +168,25 @@ def all_lists(owner_id):
         items = 10
     all_todolists = db.session.execute(db.select(ToDoLists).filter_by(owner_id=owner_id)).scalars()
 
-    return render_template('all_lists.html', todolists=all_todolists, items=items)
+    return render_template('all_lists.html', todolists=all_todolists, items=items,
+                           logged_in=current_user.is_authenticated)
 
-
+# --- LIST MANIPULATION ---
 @app.route('/newlist')
 @login_required
 def new_list():
     list_to_add = ToDoLists(list_title="Start a new List!", owner_id=current_user.id)
     db.session.add(list_to_add)
     db.session.commit()
-    return redirect(url_for('all_lists', owner_id=current_user.id))
+    return redirect(url_for('all_lists', owner_id=current_user.id,
+                            logged_in=current_user.is_authenticated))
 
 
 @app.route('/edit/<int:list_id>', methods=['POST', 'GET'])
 @login_required
 def edit_list(list_id):
+    id_check(list_id)
+
     title = ToDoLists.query.get(list_id)
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
 
@@ -185,42 +200,45 @@ def edit_list(list_id):
                 task = Tasks.query.get(int(item[0]))
                 task.text = item[1][0]
             db.session.commit()
-        return redirect(url_for('todo_list', list_id=list_id))
-    return render_template('edit_list.html', title=title.list_title, todos=todos, list_id=list_id)
-
-
-@app.route('/addtask/<int:list_id>')
-@login_required
-def add_task(list_id):
-    new_task = Tasks(text="", list_id=list_id)
-    db.session.add(new_task)
-    db.session.commit()
-    return redirect(url_for('edit_list', list_id=list_id))
-
-
-@app.route('/deletetask/<int:task_id>, <int:list_id>')
-@login_required
-def delete_task(task_id, list_id):
-    task_to_delete = Tasks.query.get(task_id)
-    db.session.delete(task_to_delete)
-    db.session.commit()
-    return redirect(url_for('edit_list', list_id=list_id))
+        return redirect(url_for('todo_list', list_id=list_id, logged_in=current_user.is_authenticated))
+    return render_template('edit_list.html', title=title.list_title, todos=todos, list_id=list_id,
+                           logged_in=current_user.is_authenticated)
 
 
 @app.route('/delete/<int:list_id>')
 @login_required
 def delete_list(list_id):
+    id_check(list_id)
+
     list_to_delete = ToDoLists.query.get(list_id)
     db.session.delete(list_to_delete)
     db.session.commit()
-    return redirect(url_for('all_lists', owner_id=current_user.id))
+    return redirect(url_for('all_lists', owner_id=current_user.id, logged_in=current_user.is_authenticated))
 
 
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('home'))
+# --- TASK MANIPULATION ---
+@app.route('/addtask/<int:list_id>')
+@login_required
+def add_task(list_id):
+    id_check(list_id)
+
+    new_task = Tasks(text="", list_id=list_id)
+    db.session.add(new_task)
+    db.session.commit()
+    return redirect(url_for('edit_list', list_id=list_id, logged_in=current_user.is_authenticated))
 
 
+@app.route('/deletetask/<int:task_id>, <int:list_id>')
+@login_required
+def delete_task(task_id, list_id):
+    id_check(list_id)
+
+    task_to_delete = Tasks.query.get(task_id)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect(url_for('edit_list', list_id=list_id, logged_in=current_user.is_authenticated))
+
+
+# APP LOOP
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,3 +1,5 @@
+/* ----- TAGS ----- */
+
 body {
     font-family: 'Syne Mono', monospace;
     background: #F0F0F0;
@@ -6,14 +8,6 @@ body {
 nav {
     background-color: #9CE49F;
     height: 70px !important;
-}
-
-
-.button {
-  background-color: #9CE49F !important;
-  border-color: black !important;
-  border-radius: 2em !important;
-  color: black !important;
 }
 
 label {
@@ -27,26 +21,46 @@ input {
   width: 100% !important;
 }
 
-.func-card {
-  padding-top: 3.5em;
-  background-color: #9CE49F;
-  padding-bottom: 1em;
+
+
+/* ----- CLASSES ----- */
+
+.bullet-points {
+  padding-left: 3%;
 }
 
-.nav-item {
-  padding-right: 5%;
-  text-align: right;
+.button {
+  background-color: #9CE49F !important;
+  border-color: black !important;
+  border-radius: 2em !important;
+  color: black !important;
 }
 
-.toggler-icon {
-    position: absolute;
-    right: 0;
-    margin-right: 5%;
+.change-button {
+  background-color: #CBCBCB !important;
+  margin-top: 1.5em;
+  font-size: 14px;
+  padding: 0.1em 0.8em;
+  text-align: center;
+  width: fit-content !important;
 }
 
-.google-icon {
-  font-size: 35px;
-  vertical-align: top;
+.content {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.custom-list {
+  padding: 1% 2%;
+  font-size: 26px;
+}
+
+.edit-task {
+  margin-top: 3%;
+  margin-left: 5%;
+  padding-left: 1%;
+  width: 85% !important;
+  border-style: none;
 }
 
 .flash-message {
@@ -55,14 +69,23 @@ input {
   padding-top: 1em;
 }
 
-.logo {
-    font-family: 'Reenie Beanie', cursive;
-    font-size: 9em;
-    padding-top: 0.7em;
+
+.footer {
+  width: 100%;
+  position: static;
+  bottom: 2%;
+  padding-top: 8.5em;
 }
 
-.normal-text {
-    font-size: 32px;
+.func-card {
+  padding-top: 3.5em;
+  background-color: #9CE49F;
+  padding-bottom: 1em;
+}
+
+.google-icon {
+  font-size: 35px;
+  vertical-align: top;
 }
 
 .headline-button {
@@ -80,54 +103,54 @@ input {
   text-align: left;
 }
 
-.edit-task {
-  margin-top: 3%;
-  margin-left: 5%;
-  padding-left: 1%;
-  width: 85% !important;
-  border-style: none;
-}
-
-#add-task {
-  margin-left: 5%;
-  margin-top: 2%;
-  font-size: 24px;
-  color: black;
-}
-
-.trash {
-  vertical-align: middle !important;
-  font-size: 28px !important;
-  color: red;
-  border-style: none;
-
-}
-
-.custom-list {
-  padding: 1% 2%;
-  font-size: 26px;
-}
-
 .input-group {
   font-size: 24px;
   padding: 1% 15%;
 }
 
-.bullet-points {
-  padding-left: 3%;
+.logo {
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 9em;
+    padding-top: 0.7em;
 }
 
-.nav-text {
-    font-size: 24px;
+.log-button {
+  margin-top: 1.5em;
+  font-size: 20px;
+  padding: 0.1em 0.8em;
+  text-align: center;
+  width: fit-content !important;
+}
+
+.log-signup {
+  position: absolute;
+  right: 0;
+  padding-right: 5%;
 }
 
 .nav {
   padding-top: 9px !important;
 }
 
-.content {
-  padding-left: 10%;
-  padding-right: 10%;
+.nav-item {
+  padding-right: 5%;
+  text-align: right;
+}
+
+.nav-logo {
+  position: absolute;
+  padding-left: 0.5em;
+  font-family: 'Reenie Beanie', cursive;
+  font-size: 3em;
+
+}
+
+.nav-text {
+    font-size: 24px;
+}
+
+.normal-text {
+    font-size: 32px;
 }
 
 .start-button {
@@ -141,19 +164,44 @@ input {
   vertical-align: text-top;
 }
 
-.footer {
-  width: 100%;
-  position: static;
-  bottom: 2%;
-  padding-top: 8.5em;
+.toggler-icon {
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
 }
 
-.nav-logo {
-  position: absolute;
-  padding-left: 0.5em;
-  font-family: 'Reenie Beanie', cursive;
-  font-size: 3em;
+.trash {
+  vertical-align: middle !important;
+  font-size: 28px !important;
+  color: red;
+  border-style: none;
 
+}
+
+
+
+/* ----- ID's ----- */
+
+#acc-quest {
+  font-size: 24px;
+  padding: 25% 0 0 20%;
+}
+
+#add-task {
+  margin-left: 5%;
+  margin-top: 2%;
+  font-size: 24px;
+  color: black;
+}
+
+#change-buttons {
+  padding-left: 14%;
+}
+
+#disclaimer {
+  padding-top: 1.5em;
+  color: red;
+  font-weight: bolder;
 }
 
 #greeting {
@@ -161,34 +209,22 @@ input {
   padding-top: 1em;
 }
 
+#list-overview {
+  padding-left: 15%;
+}
+
 #new-user-greeting {
   font-size: 45px;
   padding-top: 3em;
 }
 
-.log-signup {
-  position: absolute;
-  right: 0;
-  padding-right: 5%;
-}
-
-#acc-quest {
-  font-size: 24px;
-  padding: 25% 0 0 20%;
-}
-
-
-
-.log-button {
+#save-button {
   margin-top: 1.5em;
-  font-size: 20px;
+  margin-left: 5%;
+  font-size: 17px;
   padding: 0.1em 0.8em;
   text-align: center;
   width: fit-content !important;
-}
-
-#list-overview {
-  padding-left: 15%;
 }
 
 #sign-button {
@@ -198,14 +234,11 @@ input {
   padding: 0.1em 0.8em;
 }
 
-#disclaimer {
-  padding-top: 1.5em;
-  color: red;
-  font-weight: bolder;
-}
 
 
 
+
+/* ----- MEDIA QUERIES ----- */
 
 @media (max-width: 768px){
   #acc-quest {
@@ -221,29 +254,6 @@ input {
   }
 
 }
-
-#save-button {
-  margin-top: 1.5em;
-  margin-left: 5%;
-  font-size: 17px;
-  padding: 0.1em 0.8em;
-  text-align: center;
-  width: fit-content !important;
-}
-
-#change-buttons {
-  padding-left: 14%;
-}
-
-.change-button {
-  background-color: #CBCBCB !important;
-  margin-top: 1.5em;
-  font-size: 14px;
-  padding: 0.1em 0.8em;
-  text-align: center;
-  width: fit-content !important;
-}
-
 
 @media (min-width: 992px) {
   .func-item {
