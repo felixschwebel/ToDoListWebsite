@@ -141,7 +141,7 @@ def todo_list(list_id):
     title = ToDoLists.query.get(list_id).list_title
     todos = db.session.execute(db.select(Tasks).filter_by(list_id=list_id).order_by(asc(Tasks.checked))).scalars()
     if request.method == 'POST':
-        response = [int(i[0]) for i in request.values.lists()]
+        response = [int(i[0]) for i in request.values.lists() if i[0] != 'logged_in']
         for index in todos:
             if index.id in response:
                 task_to_update = Tasks.query.get(index.id)
@@ -193,7 +193,9 @@ def edit_list(list_id):
     if request.method == 'POST':
         response = request.values.lists()
         for item in response:
-            if item[0] == 'title':
+            if item[0] == 'logged_in':
+                pass
+            elif item[0] == 'title':
                 list_to_change = ToDoLists.query.get(list_id)
                 list_to_change.list_title = item[1][0]
             else:
